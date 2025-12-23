@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Harman!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .birthday-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .birthday-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: float 20s linear infinite;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-30px, -30px) rotate(360deg); }
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .from-raveneet {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff6b8b, #4a6bff);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.3);
+            z-index: 2;
+        }
+        
+        .birthday-title {
+            color: #ff6b8b;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 #ffdd59;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .celebrant-name {
+            color: #4a6bff;
+            font-size: 3rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0 rgba(255, 221, 89, 0.5);
+            background: linear-gradient(45deg, #ff6b8b, #4a6bff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            padding: 0 20px;
+        }
+        
+        .wishes-container {
+            margin: 40px 0;
+            min-height: 300px;
+            position: relative;
+        }
+        
+        .birthday-wish {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-size: 2.2rem;
+            color: #333;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        
+        .birthday-wish.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+            animation: rotate 3s infinite;
+        }
+        
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        
+        .message-control {
+            margin-top: 40px;
+        }
+        
+        .next-btn {
+            background: linear-gradient(45deg, #ff6b8b, #4a6bff);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+            font-weight: bold;
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 107, 255, 0.6);
+        }
+        
+        .next-btn:active {
+            transform: translateY(0);
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            color: #ff6b8b;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        .auto-message {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .footer-note {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ff6b8b;
+            color: #666;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .birthday-title {
+                font-size: 2.5rem;
+            }
+            
+            .celebrant-name {
+                font-size: 2.2rem;
+            }
+            
+            .birthday-wish {
+                font-size: 1.8rem;
+            }
+            
+            .emoji {
+                font-size: 2.5rem;
+            }
+            
+            .from-raveneet {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .birthday-card {
+                padding: 25px;
+            }
+            
+            .birthday-title {
+                font-size: 2rem;
+            }
+            
+            .celebrant-name {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            
+            .birthday-wish {
+                font-size: 1.5rem;
+            }
+            
+            .emoji {
+                font-size: 2rem;
+            }
+            
+            .from-raveneet {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-card">
+        <div class="from-raveneet">From Your Friend Ravneet ❤️</div>
+        
+        <div class="card-content">
+            <h1 class="birthday-title">🎉 Happy Birthday! 🎉</h1>
+            <h2 class="celebrant-name">Harman</h2>
+            
+            <div class="wishes-container">
+                <div class="birthday-wish active" id="wish1">
+                    <span class="emoji">🎂</span>
+                    Happy Birthday Harman! Wishing you a day filled with happiness and joy!
+                </div>
+                
+                <div class="birthday-wish" id="wish2">
+                    <span class="emoji">✨</span>
+                    Dear Harman, may all your dreams and wishes come true this year!
+                </div>
+                
+                <div class="birthday-wish" id="wish3">
+                    <span class="emoji">🥳</span>
+                    Here's to another year of amazing adventures and memories, Harman!
+                </div>
+                
+                <div class="birthday-wish" id="wish4">
+                    <span class="emoji">🎁</span>
+                    May you be blessed with love, laughter, and all things wonderful, Harman!
+                </div>
+                
+                <div class="birthday-wish" id="wish5">
+                    <span class="emoji">❤️</span>
+                    You're an amazing friend Harman, and you deserve all the happiness in the world!
+                </div>
+                
+                <div class="birthday-wish" id="wish6">
+                    <span class="emoji">🌟</span>
+                    May this year bring you closer to your goals and dreams, dear Harman!
+                </div>
+                
+                <div class="birthday-wish" id="wish7">
+                    <span class="emoji">🎈</span>
+                    Have the most wonderful celebration surrounded by loved ones, Harman!
+                </div>
+                
+                <div class="birthday-wish" id="wish8">
+                    <span class="emoji">🍰</span>
+                    Enjoy every moment of your special day to the fullest, Harman!
+                </div>
+                
+                <div class="birthday-wish" id="wish9">
+                    <span class="emoji">🎊</span>
+                    Cheers to you, Harman! May your birthday be as awesome as you are!
+                </div>
+                
+                <div class="birthday-wish" id="wish10">
+                    <span class="emoji">💫</span>
+                    Wishing my wonderful friend Harman the happiest of birthdays!
+                </div>
+            </div>
+            
+            <div class="message-control">
+                <button class="next-btn" id="nextWishBtn">Next Birthday Wish →</button>
+                <p class="auto-message">Messages will automatically rotate every 6 seconds</p>
+            </div>
+            
+            <div class="footer-note">
+                Made with lots of love and best wishes from your friend Ravneet 💖
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all wish elements
+            const wishes = document.querySelectorAll('.birthday-wish');
+            const nextWishBtn = document.getElementById('nextWishBtn');
+            let currentWishIndex = 0;
+            
+            // Function to show a specific wish
+            function showWish(index) {
+                // Hide all wishes
+                wishes.forEach(wish => {
+                    wish.classList.remove('active');
+                });
+                
+                // Show the selected wish
+                wishes[index].classList.add('active');
+                
+                // Create celebration effects
+                createConfetti();
+                createHearts();
+                
+                // Special celebration on first and last wishes
+                if (index === 0 || index === wishes.length - 1) {
+                    createSpecialCelebration();
+                }
+            }
+            
+            // Function to show next wish
+            function nextWish() {
+                currentWishIndex = (currentWishIndex + 1) % wishes.length;
+                showWish(currentWishIndex);
+            }
+            
+            // Button click event
+            nextWishBtn.addEventListener('click', nextWish);
+            
+            // Create confetti effect
+            function createConfetti() {
+                const colors = ['#ff6b8b', '#4a6bff', '#ffdd59', '#6bff8b', '#8b6bff'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random properties
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const left = Math.random() * 100;
+                    const size = Math.random() * 10 + 5;
+                    const animationDuration = Math.random() * 3 + 2;
+                    
+                    // Apply styles
+                    confetti.style.left = `${left}vw`;
+                    confetti.style.backgroundColor = color;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    
+                    // Add to document
+                    document.body.appendChild(confetti);
+                    
+                    // Animate
+                    const animation = confetti.animate([
+                        { top: '-10px', opacity: 1, transform: 'rotate(0deg)' },
+                        { top: `${Math.random() * 50 + 50}vh`, opacity: 0.8 },
+                        { top: '100vh', opacity: 0, transform: `rotate(${Math.random() * 720}deg)` }
+                    ], {
+                        duration: animationDuration * 1000,
+                        easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                    });
+                    
+                    // Remove after animation completes
+                    animation.onfinish = () => {
+                        confetti.remove();
+                    };
+                }
+            }
+            
+            // Create floating hearts effect
+            function createHearts() {
+                for (let i = 0; i < 15; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '❤️';
+                    
+                    // Random properties
+                    const left = Math.random() * 100;
+                    const size = Math.random() * 20 + 15;
+                    const animationDuration = Math.random() * 4 + 3;
+                    
+                    // Apply styles
+                    heart.style.left = `${left}vw`;
+                    heart.style.fontSize = `${size}px`;
+                    
+                    // Add to document
+                    document.body.appendChild(heart);
+                    
+                    // Animate
+                    const animation = heart.animate([
+                        { top: '100vh', opacity: 1, transform: 'scale(1)' },
+                        { top: `${Math.random() * 70}vh`, opacity: 0.7, transform: 'scale(1.2)' },
+                        { top: '-50px', opacity: 0, transform: 'scale(0.5)' }
+                    ], {
+                        duration: animationDuration * 1000,
+                        easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                    });
+                    
+                    // Remove after animation completes
+                    animation.onfinish = () => {
+                        heart.remove();
+                    };
+                }
+            }
+            
+            // Create special celebration with name
+            function createSpecialCelebration() {
+                // Create floating "Harman" letters
+                const name = "HARMAN";
+                for (let i = 0; i < name.length; i++) {
+                    setTimeout(() => {
+                        const letter = document.createElement('div');
+                        letter.className = 'heart';
+                        letter.innerHTML = name[i];
+                        letter.style.color = '#4a6bff';
+                        letter.style.fontWeight = 'bold';
+                        letter.style.fontSize = '30px';
+                        
+                        const left = Math.random() * 80 + 10;
+                        const size = Math.random() * 30 + 25;
+                        const animationDuration = Math.random() * 5 + 4;
+                        
+                        letter.style.left = `${left}vw`;
+                        letter.style.fontSize = `${size}px`;
+                        
+                        document.body.appendChild(letter);
+                        
+                        const animation = letter.animate([
+                            { top: '100vh', opacity: 1, transform: 'scale(1) rotate(0deg)' },
+                            { top: `${Math.random() * 60 + 20}vh`, opacity: 0.9, transform: 'scale(1.3) rotate(180deg)' },
+                            { top: '-50px', opacity: 0, transform: 'scale(0.5) rotate(360deg)' }
+                        ], {
+                            duration: animationDuration * 1000,
+                            easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                        });
+                        
+                        animation.onfinish = () => {
+                            letter.remove();
+                        };
+                    }, i * 200);
+                }
+            }
+            
+            // Auto-rotate wishes every 6 seconds
+            setInterval(nextWish, 6000);
+            
+            // Initial celebration
+            setTimeout(() => {
+                createConfetti();
+                createHearts();
+                createSpecialCelebration();
+            }, 1000);
+            
+            // Additional random celebrations
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createHearts();
+                }
+            }, 3000);
+            
+            // Keyboard controls
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextWish();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
